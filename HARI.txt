@@ -1,0 +1,120 @@
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| p_id      | int         | NO   | PRI | NULL    |       |
+| prod_name | varchar(30) | YES  |     | NULL    |       |
+| qty       | int         | NO   |     | NULL    |       |
+| sale_date | date        | YES  |     | NULL    |       |
+| price     | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+
+TABLE
++------+---------------+-----+------------+-------+
+| p_id | prod_name     | qty | sale_date  | price |
++------+---------------+-----+------------+-------+
+|  101 | Headphones    |   5 | 2024-06-01 |  2500 |
+|  102 | Electric lamp |   3 | 2024-01-02 |   900 |
+|  103 | Socket        |   2 | 2024-03-20 |    60 |
+|  104 | Switch        |   4 | 2024-01-03 |    80 |
+|  105 | LED bulb      |   6 | 2024-04-13 |  NULL |
+|  106 | Blender       |   2 | 2024-02-25 |  1899 |
+|  107 | Mixer         |   3 | 2024-07-01 |  4500 |
+|  108 | Table Fan     |   4 | 2024-04-15 |  NULL |
+|  109 | Patch Cable   |   8 | 2024-05-01 |   550 |
++------+---------------+-----+------------+-------+
+
+CREATE
+
+create table Product(p_id int primary key, prod_name varchar(30), qty int not null, sale_date date, price int check(price>0));
+
+INSERT
+
+insert into Product values(101, 'Headphones', 5, '2024-06-01', 2500.00);
+insert into Product values(102, 'Electric lamp', 3, '2024-01-02', 900.00);
+insert into Product values(103, 'Socket', 2, '2024-03-20', 60);
+insert into Product values(104, 'Switch', 4, '2024-01-03', 80);
+insert into Product(p_id, prod_name, qty, sale_date) values(105,'LED bulb', 6, '2024-04-13');
+insert into Product values(106, 'Blender', 2, '2024-02-25', 1899);
+insert into Product values(107, 'Mixer', 3, '2024-07-01', 4500);
+insert into Product(p_id, prod_name, qty, sale_date) values(108,'Table Fan', 4, '2024-04-15');
+insert into Product values(109, 'Patch Cable', 8, '2024-05-01', 550);
+
+QUERIES
+
+1-> select prod_name from Product where qty>5 and price>1000;
+Empty set (0.02 sec)
+
+2-> select * from Product order by sale_date asc;
++------+---------------+-----+------------+-------+
+| p_id | prod_name     | qty | sale_date  | price |
++------+---------------+-----+------------+-------+
+|  102 | Electric lamp |   3 | 2024-01-02 |   900 |
+|  104 | Switch        |   4 | 2024-01-03 |    80 |
+|  106 | Blender       |   2 | 2024-02-25 |  1899 |
+|  103 | Socket        |   2 | 2024-03-20 |    60 |
+|  105 | LED bulb      |   6 | 2024-04-13 |  NULL |
+|  108 | Table Fan     |   4 | 2024-04-15 |  NULL |
+|  109 | Patch Cable   |   8 | 2024-05-01 |   550 |
+|  101 | Headphones    |   5 | 2024-06-01 |  2500 |
+|  107 | Mixer         |   3 | 2024-07-01 |  4500 |
++------+---------------+-----+------------+-------+
+
+3-> select prod_name,qty from Product;
++---------------+-----+
+| prod_name     | qty |
++---------------+-----+
+| Headphones    |   5 |
+| Electric lamp |   3 |
+| Socket        |   2 |
+| Switch        |   4 |
+| LED bulb      |   6 |
+| Blender       |   2 |
+| Mixer         |   3 |
+| Table Fan     |   4 |
+| Patch Cable   |   8 |
++---------------+-----+
+
+4-> select prod_name,qty,price*qty as total_sale from Product;
++---------------+-----+------------+
+| prod_name     | qty | total_sale |
++---------------+-----+------------+
+| Headphones    |   5 |      12500 |
+| Electric lamp |   3 |       2700 |
+| Socket        |   2 |        120 |
+| Switch        |   4 |        320 |
+| LED bulb      |   6 |       NULL |
+| Blender       |   2 |       3798 |
+| Mixer         |   3 |      13500 |
+| Table Fan     |   4 |       NULL |
+| Patch Cable   |   8 |       4400 |
++---------------+-----+------------+
+
+5->select * from Product where sale_date not like '______4___';
++------+---------------+-----+------------+-------+
+| p_id | prod_name     | qty | sale_date  | price |
++------+---------------+-----+------------+-------+
+|  101 | Headphones    |   5 | 2024-06-01 |  2500 |
+|  102 | Electric lamp |   3 | 2024-01-02 |   900 |
+|  103 | Socket        |   2 | 2024-03-20 |    60 |
+|  104 | Switch        |   4 | 2024-01-03 |    80 |
+|  106 | Blender       |   2 | 2024-02-25 |  1899 |
+|  107 | Mixer         |   3 | 2024-07-01 |  4500 |
+|  109 | Patch Cable   |   8 | 2024-05-01 |   550 |
++------+---------------+-----+------------+-------+
+
+6-> alter table Product add column place varchar(20) default 'Bangalore';
+
+7-> update Product set qty = qty+3 where prod_name in ('Blender','Mixer','Table Fan');
+
+8-> delete from Product where prod_name = 'Socket';
+
+9-> insert into Product(p_id, prod_name, qty, sale_date) values(110, 'Table Lamp', 3, '2024-03-06');
+
+10-> select p_id,prod_name,qty,sale_date,ifnull(price, 'price list not updated') as price,place from Product where price is null;
++------+------------+-----+------------+------------------------+-----------+
+| p_id | prod_name  | qty | sale_date  | price                  | place     |
++------+------------+-----+------------+------------------------+-----------+
+|  105 | LED bulb   |   6 | 2024-04-13 | price list not updated | Bangalore |
+|  108 | Table Fan  |   7 | 2024-04-15 | price list not updated | Bangalore |
+|  110 | Table Lamp |   3 | 2024-03-06 | price list not updated | Bangalore |
++------+------------+-----+------------+------------------------+-----------+
