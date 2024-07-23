@@ -1,0 +1,15 @@
+CREATE 
+
+create table Mobile_Master(M_id char(5) primary key, Company varchar(10), Name varchar(20), Price int check(price>20000), Mfd_Date date);
+
+INSERT
+
+insert into Mobile_master values('MB001', 'Samsung', 'Galaxy S23', 100920, '2023-02-02');
+insert into Mobile_master values('MB003', 'Apple', 'iPhone 15 Pro Max', 159900, '2023-09-13');
+insert into Mobile_master values('MB004', 'Google', 'Pixel 8 Pro', 106999, '2023-10-04');
+insert into Mobile_master values('MB005', 'Apple', 'iPhone 15 Plus', 89900, '2023-09-13');
+insert into Mobile_master values('MB006', 'Vivo', 'X90 Pro', 74800, '2023-04-25');
+insert into Mobile_master values('MB007', 'Xiaomi', '13 Pro', 74990, '2023-03-10');
+insert into Mobile_master values('MB008', 'Vivo', 'Y200', 22999, '2024-01-23');
+
+insert into Mobile_master values();
